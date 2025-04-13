@@ -20,7 +20,7 @@ function AppContent({ isAuthenticated, setIsAuthenticated, handleLogout }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
-  }, []); // ✅ fixed: unnecessary dependency removed
+  }, []); // ✅ dependency array থেকে location.pathname বাদ দেওয়া হয়েছে
 
   return (
     <>
