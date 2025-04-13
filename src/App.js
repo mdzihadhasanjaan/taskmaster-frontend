@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  useLocation
 } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -13,25 +14,17 @@ import PrivateRoute from './components/PrivateRoute';
 
 import './styles.css';
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+function AppContent({ isAuthenticated, setIsAuthenticated, handleLogout }) {
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
-  }, [window.location.pathname]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    window.location.href = '/login';
-  };
+  }, [location.pathname]);
 
   return (
-    <Router>
-      {/* ✅ ব্যবহার করছি সুন্দর ক্লিন Navbar */}
+    <>
       <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
@@ -45,6 +38,26 @@ function App() {
           }
         />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    window.location.href = '/login';
+  };
+
+  return (
+    <Router>
+      <AppContent
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+        handleLogout={handleLogout}
+      />
     </Router>
   );
 }
