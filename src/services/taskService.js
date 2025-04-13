@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:5000/api/tasks';
+// API base from .env (for production + dev)
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_BASE = `${API}/api/tasks`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
