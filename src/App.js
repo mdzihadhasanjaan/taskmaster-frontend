@@ -20,7 +20,7 @@ function AppContent({ isAuthenticated, setIsAuthenticated, handleLogout }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
-  }, [location.pathname]);
+  }, []); // ✅ dependency array থেকে location.pathname বাদ দেওয়া হয়েছে
 
   return (
     <>
@@ -32,7 +32,7 @@ function AppContent({ isAuthenticated, setIsAuthenticated, handleLogout }) {
         <Route
           path="/tasks"
           element={
-            <PrivateRoute>
+            <PrivateRoute isAuthenticated={isAuthenticated}>
               <Tasks />
             </PrivateRoute>
           }
@@ -48,7 +48,6 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
-    window.location.href = '/login';
   };
 
   return (
